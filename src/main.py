@@ -5,8 +5,12 @@ table = pd.concat(pd.read_html(uri, match='評価点'))              # すべて
 
 table = table.drop(columns='キャラ')                              
 table = table[table['名前と入手方法'].str.contains('）ガチャ　')]
-table = table.sort_values('評価点', ascending=False)
+
+table = table.replace('（', '(', regex=True).replace('）', ') ', regex=True) 
+
+table = table.replace('(^.*) .*$', r'\1', regex=True)       
+table = table.replace('^.*(\d\.?\d).*$', r'\1', regex=True) 
+table = table.sort_values('評価点', ascending=False)        
 
 today = pd.to_datetime('today').strftime('%Y%m%d')                # 今日の日付
-table.to_csv(f'./gw.{today}.csv', index=False, encoding="utf-8")  # ファイルに書き込み
-
+table.to_csv(f'../data/gw.{today}.csv', index=False, encoding="utf-8")  # ファイルに書き込み

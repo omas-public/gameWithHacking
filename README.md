@@ -45,7 +45,7 @@
 import pandas as pd
 
 uri = 'https://xn--eckwa2aa3a9c8j8bve9d.gamewith.jp/article/show/284'
-table = pd.read_html(uri, match='評価点')[0]
+table = pd.read_html(uri, match='評価点')[0]                          # 火の属性だけ
 
 print(table)
 ```
@@ -55,21 +55,60 @@ print(table)
 ![g1](./image/g1.png)
 
 
-#### 必要なデータの絞り込み
+#### 必要なデータの絞り込み1
 
 
 ```python
 import pandas as pd
 
 uri = 'https://xn--eckwa2aa3a9c8j8bve9d.gamewith.jp/article/show/284'
-table = pd.read_html(URI, match='評価点')[0]
+table = pd.read_html(uri, match='評価点')[0]
 
 table = table.drop(columns='キャラ')                              # 画像はいらない 
 table = table[table['名前と入手方法'].str.contains('）ガチャ　')] # ガチャキャラだけ
-table = table.sort_values('評価点', ascending=False)              # 点数が高い順に並び替え
 
 print(table)
 ```
+
+#### 必要なデータの絞り込み2
+
+
+```python
+import pandas as pd
+
+uri = 'https://xn--eckwa2aa3a9c8j8bve9d.gamewith.jp/article/show/284'
+table = pd.read_html(uri, match='評価点')[0]                                
+
+table = table.drop(columns='キャラ')                              
+table = table[table['名前と入手方法'].str.contains('）ガチャ　')]
+
+table = table.replace('（', '(', regex=True).replace('）', ')', regex=True)   # 正規表現を使って 全角のカッコを半角にする
+
+print(table)
+
+#### 必要なデータの絞り込み3
+
+
+```python
+import pandas as pd
+
+uri = 'https://xn--eckwa2aa3a9c8j8bve9d.gamewith.jp/article/show/284'
+table = pd.read_html(uri, match='評価点')[0]
+
+table = table.drop(columns='キャラ')                              
+table = table[table['名前と入手方法'].str.contains('）ガチャ　')]
+
+table = table.replace('（', '(', regex=True).replace('）', ')', regex=True) 
+
+table = table.replace('(^.*) .*$', r'\1', regex=True)        # ガチャの情報いらない   // ラプラス（神化）ガチャ -> ラプラス（神化）
+table = table.replace('^.*(\d\.?\d).*$', r'\1', regex=True)  # 評価点だけあればいい   // ※限定,9.5点 -> 9.5
+table = table.sort_values('評価点', ascending=False)         # 評価点で並び替え
+
+
+print(table)
+```
+
+
 
 #### 整形したデータを ファイルに書き込み 
 
@@ -81,10 +120,15 @@ table = pd.concat(pd.read_html(uri, match='評価点'))              # すべて
 
 table = table.drop(columns='キャラ')                              
 table = table[table['名前と入手方法'].str.contains('）ガチャ　')]
-table = table.sort_values('評価点', ascending=False)
+
+table = table.replace('（', '(', regex=True).replace('）', ')', regex=True) 
+
+table = table.replace('(^.*) .*$', r'\1', regex=True)       
+table = table.replace('^.*(\d\.?\d).*$', r'\1', regex=True) 
+table = table.sort_values('評価点', ascending=False)        
 
 today = pd.to_datetime('today').strftime('%Y%m%d')                # 今日の日付
-table.to_csv(f'./gw.{today}.csv', index=False, encoding="utf-8")  # ファイルに書き込み
+table.to_csv(f'../data/gw.{today}.csv', index=False, encoding="utf-8")  # ファイルに書き込み
 
 
 ```
