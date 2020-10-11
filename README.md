@@ -85,6 +85,7 @@ table = table[table['名前と入手方法'].str.contains('）ガチャ　')]
 table = table.replace('（', '(', regex=True).replace('）', ')', regex=True)   # 正規表現を使って 全角のカッコを半角にする
 
 print(table)
+```
 
 #### 必要なデータの絞り込み3
 
@@ -107,7 +108,6 @@ table = table.sort_values('評価点', ascending=False)         # 評価点で�
 
 print(table)
 ```
-
 
 
 #### 整形したデータを ファイルに書き込み 
