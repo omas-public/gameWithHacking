@@ -82,7 +82,7 @@ table = pd.read_html(uri, match='評価点')[0]
 table = table.drop(columns='キャラ')                              
 table = table[table['名前と入手方法'].str.contains('）ガチャ　')]
 
-table = table.replace('（', '(', regex=True).replace('）', ')', regex=True)   # 正規表現を使って 全角のカッコを半角にする
+table = table.replace('（', '(', regex=True).replace('）', ') ', regex=True)   # 正規表現を使って 全角のカッコを半角にする
 
 print(table)
 ```
@@ -99,7 +99,7 @@ table = pd.read_html(uri, match='評価点')[0]
 table = table.drop(columns='キャラ')                              
 table = table[table['名前と入手方法'].str.contains('）ガチャ　')]
 
-table = table.replace('（', '(', regex=True).replace('）', ')', regex=True) 
+table = table.replace('（', '(', regex=True).replace('）', ') ', regex=True) 
 
 table = table.replace('(^.*) .*$', r'\1', regex=True)        # ガチャの情報いらない   // ラプラス（神化）ガチャ -> ラプラス（神化）
 table = table.replace('^.*(\d\.?\d).*$', r'\1', regex=True)  # 評価点だけあればいい   // ※限定,9.5点 -> 9.5
@@ -121,7 +121,7 @@ table = pd.concat(pd.read_html(uri, match='評価点'))              # すべて
 table = table.drop(columns='キャラ')                              
 table = table[table['名前と入手方法'].str.contains('）ガチャ　')]
 
-table = table.replace('（', '(', regex=True).replace('）', ')', regex=True) 
+table = table.replace('（', '(', regex=True).replace('）', ') ', regex=True) 
 
 table = table.replace('(^.*) .*$', r'\1', regex=True)       
 table = table.replace('^.*(\d\.?\d).*$', r'\1', regex=True) 
