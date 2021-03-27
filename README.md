@@ -102,7 +102,7 @@ table = table[table['名前と入手方法'].str.contains('）ガチャ　')]
 table = table.replace('（', '(', regex=True).replace('）', ') ', regex=True) 
 
 table = table.replace('(^.*) .*$', r'\1', regex=True)        # ガチャの情報いらない   // ラプラス（神化）ガチャ -> ラプラス（神化）
-table = table.replace('^.*(\d{1,2}\.?\d).*$', r'\1', regex=True)  # 評価点だけあればいい   // ※限定,9.5点 -> 9.5
+table = table.replace('^.*(\d+\.?\d).*$', r'\1', regex=True)  # 評価点だけあればいい   // ※限定,9.5点 -> 9.5
 table = table.sort_values('評価点', ascending=False)         # 評価点で並び替え
 
 
@@ -124,7 +124,7 @@ table = table[table['名前と入手方法'].str.contains('）ガチャ　')]
 table = table.replace('（', '(', regex=True).replace('）', ') ', regex=True) 
 
 table = table.replace('(^.*) .*$', r'\1', regex=True)       
-table = table.replace('^.*(\d{1,2}\.?\d).*$', r'\1', regex=True) 
+table = table.replace('^.*(\d+\.?\d).*$', r'\1', regex=True) 
 table = table.sort_values('評価点', ascending=False)        
 
 today = pd.to_datetime('today').strftime('%Y%m%d')                # 今日の日付
