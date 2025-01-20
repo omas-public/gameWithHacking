@@ -36,9 +36,14 @@
 
 ## Live coding
 
-
 ### [GameWith MonsterStrike Rating Page](https://xn--eckwa2aa3a9c8j8bve9d.gamewith.jp/article/show/284) からデータを取得
 
+### create virtual env & Install Library
+```sh
+$ python3 -m venv project && cd $_
+$ . bin/activate
+$ pip3 install beautifulsoup4, html5lib, lxml, pandas 
+```
 #### コード
 
 ```python
